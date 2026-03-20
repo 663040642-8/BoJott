@@ -10,19 +10,25 @@ datasource db {
 model User {
   id           String        @id @default(cuid())
   email        String        @unique
-  name         String
+  name         String?
   password     String
   createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   transactions Transaction[]
 }
 
 model Transaction {
-  id        String   @id @default(cuid())
-  name      String
-  amount    Float
-  type      String
-  createdAt DateTime @default(now())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  id          String          @id @default(cuid())
+  description String
+  amount      Float
+  type        TransactionType
+  date        DateTime        @default(now())
+  createdAt   DateTime        @default(now())
+  userId      String
+  user        User            @relation(fields: [userId], references: [id])
+}
+
+enum TransactionType {
+  income
+  expense
 }
